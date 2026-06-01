@@ -1,0 +1,6 @@
+mysql-connector-python==9.7.0
+python-dotenv==1.2.2
+PyQt6==6.11.0
+PyQt6-Qt6==6.11.1
+PyQt6_sip==13.11.1
+SQLAlchemy==2.0.50
