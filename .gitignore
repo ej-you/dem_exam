@@ -72,6 +72,7 @@ venv.bak/
 /.idea/
 
 # local files
+notes.txt
 task/
 media/*
 !media/default_good.png
