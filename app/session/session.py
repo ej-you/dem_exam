@@ -13,4 +13,5 @@ class Session:
     def logout(self):
         self.user = None
 
+
 session = Session()
