@@ -1,5 +1,4 @@
-from collections.abc import Callable
-from typing import List
+from typing import List, Callable
 
 from PyQt6.QtWidgets import QVBoxLayout, QTableWidget, QHeaderView, QTableWidgetItem
 

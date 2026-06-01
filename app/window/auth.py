@@ -1,7 +1,8 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
 
-from app.interface.form import Input, InputPassword, FormInputList, FormInput
+from app.interface.form import FormInputList, FormInput
+from app.interface.input import InputText, InputPassword
 from app.interface.label import Label
 from app.interface.button import Button
 from app.repo.db_session import DBSession
@@ -20,7 +21,7 @@ class AuthWindow(BaseWindow):
         username_lbl = Label("Логин")
         password_lbl = Label("Пароль")
 
-        self.username = Input("логин")
+        self.username = InputText("логин")
         self.password = InputPassword()
 
         input_list = FormInputList([

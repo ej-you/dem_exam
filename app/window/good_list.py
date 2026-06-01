@@ -1,32 +1,22 @@
 from PyQt6.QtWidgets import QWidget, QHBoxLayout
 
-from app.interface.button import Button
-from app.interface.nav import Nav
 from app.interface.scroll_list import ScrollList
 from app.repo.db_session import DBSession
 from app.repo.good import GoodRepo
-from app.session.session import session
-from app.window.base import BaseWindow
+from app.window.base import BaseWindowWithNavbar
 from config.config import DEFAULT_WINDOW_TITLE
 
 
-class GoodListWindow(BaseWindow):
+class GoodListWindow(BaseWindowWithNavbar):
     def __init__(self, app): # app: Application
         super().__init__(app, f"{DEFAULT_WINDOW_TITLE} | Список товаров")
 
         self.good_repo = GoodRepo(DBSession())
 
-        # navbar
-        self.nav = Nav()
-        self.nav.auth_btn.on_click(self._auth_btn_handler)
-        self.setMenuWidget(self.nav)
-
         # content
-        self.main_widget = QWidget()
-        self.setCentralWidget(self.main_widget)
-
-        main_layout = QHBoxLayout()
-        self.main_widget.setLayout(main_layout)
+        main_widget = QWidget()
+        self.setCentralWidget(main_widget)
+        main_layout = QHBoxLayout(main_widget)
 
         try:
             good_list = self.good_repo.get_all()
@@ -45,22 +35,6 @@ class GoodListWindow(BaseWindow):
         main_layout.addLayout(scroll_list)
 
     def _open_good_window(self, pk: int):
-        # self.app.show_good_window(pk) TODO
-        # self.close()
-        print(f"open {pk} good")
-
-        # def open_good_card(self, good_id: int):
-        #     """Открывает карточку товара"""
-        #     from app.window.good_card import GoodCardWindow
-        #     self.good_card_window = GoodCardWindow(self.app, good_id)
-        #     self.good_card_window.show()
-        #     self.close()
-
-    def _open_auth_window(self):
-        self.app.show_auth_window()
+        self.app.show_good_window(pk)
         self.close()
-
-    def _auth_btn_handler(self):
-        session.logout()
-        print("INFO: logout")
-        self._open_auth_window()
+        print(f"INFO: open {pk} good")

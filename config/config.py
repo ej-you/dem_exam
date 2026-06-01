@@ -8,7 +8,7 @@ load_dotenv()
 
 ICON_PATH = "./media/icon.png"
 
-MEDIA_PREFIX = "./media"
+MEDIA_PREFIX = "./media/"
 DEFAULT_PHOTO_PATH = "default_good.png"
 
 DEFAULT_WINDOW_TITLE = "OOO «Обувь»"

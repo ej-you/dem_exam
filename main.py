@@ -8,7 +8,8 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as err:
-        print("FATAL:", str(err))
+    main()
+    # try:
+    #     main()
+    # except Exception as err:
+    #     print("FATAL:", str(err))

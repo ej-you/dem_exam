@@ -1,25 +1,8 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLineEdit, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout
 
+from app.interface.input import Input
 from app.interface.label import Label
-
-
-class Input(QLineEdit):
-    def __init__(self, placeholder):
-        super().__init__()
-
-        self.setPlaceholderText(placeholder)
-
-    @property
-    def data(self):
-        return self.text()
-
-
-class InputPassword(Input):
-    def __init__(self):
-        super().__init__("пароль")
-
-        self.setEchoMode(self.EchoMode.Password)
 
 
 class FormInput(QVBoxLayout):
