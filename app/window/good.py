@@ -62,7 +62,11 @@ class GoodWindow(BaseWindowWithNavbar):
         photo.setScaledContents(True)
 
         # middle
-        # TODO: category, title
+        good_id = Label(f"ID товара: {good.get("id")}")
+        cat_title = QHBoxLayout()
+        cat_title.addWidget(InputText(text=good.get("category")))
+        cat_title.addWidget(InputText(text=good.get("title")))
+        cat_title.setAlignment(Qt.AlignmentFlag.AlignJustify)
         description = FormInput(
             Label("Описание товара"),
             InputText(text=good.get("description")),
@@ -88,6 +92,8 @@ class GoodWindow(BaseWindowWithNavbar):
             InputNumber(value=good.get("amount"), minimum=0),
         )
         info = QVBoxLayout()
+        info.addWidget(good_id)
+        info.addLayout(cat_title)
         info.addLayout(description)
         info.addLayout(producer)
         info.addLayout(supplier)

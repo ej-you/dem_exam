@@ -32,6 +32,7 @@ class GoodListWindow(BaseWindowWithNavbar):
         )
 
         # TODO: add filters, sorting, search
+        # TODO: button to add a new good
         main_layout.addLayout(scroll_list)
 
     def _open_good_window(self, pk: int):

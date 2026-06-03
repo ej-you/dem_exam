@@ -11,12 +11,13 @@ class Input(QWidget):
 
 
 class InputInteger(QSpinBox, Input):
-    def __init__(self, value: int = 0, minimum: int = 0, maximum: int = 100):
+    def __init__(self, value: int = 0, minimum: int = 0, maximum: int = 100, readonly: bool = False):
         super().__init__()
 
         self.setMinimum(minimum)
         self.setMaximum(maximum)
         self.setValue(value)
+        self.setReadOnly(readonly)
 
     @property
     def data(self):
@@ -24,12 +25,19 @@ class InputInteger(QSpinBox, Input):
 
 
 class InputNumber(QDoubleSpinBox, Input):
-    def __init__(self, value: float = 0, minimum: float = float("-inf"), maximum: float = float("inf")):
+    def __init__(
+        self,
+        value: float = 0,
+        minimum: float = float("-inf"),
+        maximum: float = float("inf"),
+        readonly: bool = False
+    ):
         super().__init__()
 
         self.setMinimum(minimum)
         self.setMaximum(maximum)
         self.setValue(value)
+        self.setReadOnly(readonly)
 
     @property
     def data(self):
@@ -37,11 +45,12 @@ class InputNumber(QDoubleSpinBox, Input):
 
 
 class InputText(QLineEdit, Input):
-    def __init__(self, placeholder: str = "введите текст...", text: str = ""):
+    def __init__(self, placeholder: str = "введите текст...", text: str = "", readonly: bool = False):
         super().__init__()
 
         self.setPlaceholderText(placeholder)
         self.setText(text)
+        self.setReadOnly(readonly)
 
     @property
     def data(self):
