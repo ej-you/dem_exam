@@ -12,7 +12,7 @@ class BaseWindow(QMainWindow):
         super().__init__()
         self.app = app
 
-        self.setFixedSize(QSize(1500, 750))
+        self.setFixedSize(QSize(1500, 800))
         self.setWindowTitle(title)
 
         self.statusBar().showMessage("")

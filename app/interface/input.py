@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QLineEdit, QDoubleSpinBox, QSpinBox, QWidget
+from PyQt6.QtWidgets import QLineEdit, QDoubleSpinBox, QSpinBox, QWidget, QComboBox
 
 
 class Input(QWidget):
@@ -62,3 +62,19 @@ class InputPassword(InputText):
         super().__init__("пароль")
 
         self.setEchoMode(self.EchoMode.Password)
+
+
+class ComboBox(QComboBox, Input):
+    def __init__(self):
+        super().__init__()
+
+    def select(self, text: str):
+        index = self.findText(text)
+        if index >= 0:
+            self.setCurrentIndex(index)
+
+    @property
+    def data(self):
+        return self.currentData()
+
+

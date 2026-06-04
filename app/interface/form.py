@@ -6,12 +6,18 @@ from app.interface.label import Label
 
 
 class FormInput(QVBoxLayout):
-    def __init__(self, label_elem: Label, input_elem: Input):
+    def __init__(self, label_elem: Label, input_elem: Input, required: bool = False):
         super().__init__()
 
         self.addWidget(label_elem)
         self.addWidget(input_elem)
         self.setSpacing(10)
+
+        # red asterisk
+        if required:
+            new_text = f"{label_elem.text()} <span style='color: red;'>*</span>"
+            label_elem.setText(new_text)
+            label_elem.setTextFormat(Qt.TextFormat.RichText) # for html
 
 
 class FormInputList(QVBoxLayout):

@@ -10,6 +10,10 @@ class Role(Base):
     """Роль пользователя"""
     __tablename__ = "roles"
 
+    admin = "admin"
+    manager = "manager"
+    client = "client"
+
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50), nullable=False)
 
