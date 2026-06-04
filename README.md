@@ -1,12 +1,23 @@
-## Команда для компиляции в exe:
+# Exam
+
+## Pyinstaller
+
 ```commandline
-pyinstaller -F .\main 
-```
-### (можно добавить имя файла, иконку, отключить появление консоли)
-```commandline
--n ooo_shoes
---icon=icon.ico
---noconsole
+pyinstaller -F .\main.py -n shoes --icon=icon.ico --noconsole
 ```
 
-## Итоговый файл exe хранится в папке dist
+> Папка media с файлами-картинками должна находится рядом с exe
+
+## Env
+
+```dotenv
+DB_PASSWORD="qwerty123"
+```
+
+## Venv
+
+```commandline
+python -m venv venv
+venv\Scripts\activate
+deactivate
+```
