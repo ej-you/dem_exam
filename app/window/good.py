@@ -4,9 +4,9 @@ import shutil
 from multiprocessing.spawn import old_main_modules
 from pathlib import Path
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QFileDialog
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QFileDialog, QMessageBox
 
 from app.entity.user import Role
 from app.interface.button import Button
@@ -192,6 +192,11 @@ class GoodWindow(BaseWindowWithNavbar):
             submit_btn = Button("Сохранить")
             submit_btn.on_click(self._save)
             info.addWidget(submit_btn)
+
+            self.delete_btn = Button("Удалить")
+            self.delete_btn.on_click(self._delete)
+            info.addWidget(self.delete_btn)
+
         elif self.mode == self.__mode_new:
             submit_btn = Button("Создать")
             submit_btn.on_click(self._create)
@@ -312,6 +317,29 @@ class GoodWindow(BaseWindowWithNavbar):
         except Exception as err:
             print("ERROR:", err)
             self.status_bar.error("Ошибка при сохранении товара")
+
+    def _delete(self):
+        """Удаляет товар с подтверждением"""
+
+        reply = QMessageBox.question(
+            self,
+            "Подтверждение удаления",
+            f"Вы действительно хотите удалить товар?\n\n"
+            f"ID: {self.current_pk}\n"
+            f"Название: {self.title_input.data}\n\n"
+            f"Это действие необратимо!",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+        if reply == QMessageBox.StandardButton.No:
+            return
+
+        try:
+            self.good_repo.delete(self.current_pk)
+            self._open_good_list_window()
+        except Exception as err:
+            print("ERROR:", err)
+            self.status_bar.error("Ошибка при удалении товара")
 
     def _set_view_mode(self):
         self.mode = self.__mode_view

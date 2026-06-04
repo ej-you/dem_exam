@@ -1,8 +1,9 @@
+import os
 from typing import List
 
 from app.entity.good import Good, MeasurementUnit, Supplier, Producer, GoodCategory
 from app.repo.db_session import DBSession
-from config.config import DEFAULT_PHOTO_PATH
+from config.config import DEFAULT_PHOTO_PATH, MEDIA_PREFIX
 
 
 class GoodNotFoundError(Exception):
@@ -70,6 +71,22 @@ class GoodRepo:
             # get ID and other default fields
             session.refresh(good)
             return self._to_dict(good)
+
+    def delete(self, pk: int):
+        with self.session as session:
+            good = session.query(Good).filter(Good.id == pk).first()
+
+            if not good:
+                raise GoodNotFoundError(f"Товар {pk} не найден")
+
+            # delete photo from FS
+            if good.photo and good.photo != DEFAULT_PHOTO_PATH:
+                photo_path = os.path.join(MEDIA_PREFIX, good.photo)
+                if os.path.exists(photo_path):
+                    os.remove(photo_path)
+
+            session.delete(good)
+            session.commit()
 
     def update(self, pk: int, data: dict):
         with self.session as session:
