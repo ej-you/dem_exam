@@ -1,10 +1,8 @@
 import datetime
 import os
 import shutil
-from multiprocessing.spawn import old_main_modules
-from pathlib import Path
 
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QFileDialog, QMessageBox
 
