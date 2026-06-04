@@ -1,6 +1,8 @@
 import os
 from typing import List
 
+from sqlalchemy import or_
+
 from app.entity.good import Good, MeasurementUnit, Supplier, Producer, GoodCategory
 from app.repo.db_session import DBSession
 from config.config import DEFAULT_PHOTO_PATH, MEDIA_PREFIX
@@ -31,9 +33,40 @@ class GoodRepo:
             "photo": DEFAULT_PHOTO_PATH,
         }
 
-    def get_all(self) -> List[dict]:
+    def get_all(self, filt: int = 0, search: str = "", sort: str = "") -> List[dict]:
+        """
+        Фильтрация по поставщикам.
+        Поиск по всем строковым полям.
+        Сортировка по количеству на складе.
+        """
+
         with self.session as session:
-            good_list = session.query(Good).all()
+            query = session.query(Good)
+
+            if filt and filt > 0:
+                query = query.filter(Good.supplier_id == filt)
+
+            if search and search.strip():
+                search = f"%{search.strip()}%"
+                query = query.filter(or_(
+                    Good.article.like(search),
+                    Good.title.like(search),
+                    Good.description.like(search),
+                    Good.measurement_unit.has(name=search),
+                    Good.supplier.has(title=search),
+                    Good.producer.has(title=search),
+                    Good.good_category.has(name=search)
+                ))
+
+            if sort:
+                if sort.lower() == "asc":
+                    query = query.order_by(Good.amount.asc())
+                elif sort.lower() == "desc":
+                    query = query.order_by(Good.amount.desc())
+            else:
+                query = query.order_by(Good.id.desc())
+
+            good_list = query.all()
             return [
                 {
                     "id": elem.id,
@@ -84,6 +117,7 @@ class GoodRepo:
                 photo_path = os.path.join(MEDIA_PREFIX, good.photo)
                 if os.path.exists(photo_path):
                     os.remove(photo_path)
+                    print(f"INFO: remove {photo_path} successfully")
 
             session.delete(good)
             session.commit()
