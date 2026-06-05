@@ -4,7 +4,7 @@ import shutil
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QFileDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QLabel, QVBoxLayout, QFileDialog, QMessageBox, QSizePolicy
 
 from app.entity.user import Role
 from app.interface.button import Button
@@ -126,12 +126,18 @@ class GoodWindow(BaseWindowWithNavbar):
 
         # middle
         good_id = Label(f"ID товара: {good.get("id")}")
-        cat_title = QHBoxLayout()
+        cat_title_widget = QWidget()
+        cat_title = QHBoxLayout(cat_title_widget)
         self.cat_combo.select(good.get("category"))
         cat_title.addWidget(self.cat_combo)
         self.title_input = InputText(text=good.get("title"), readonly=readonly)
         cat_title.addWidget(self.title_input)
         cat_title.setAlignment(Qt.AlignmentFlag.AlignJustify)
+
+        if good.get("discount", 0) > 15:
+            cat_title_widget.setStyleSheet("background-color: #2E8B57; color: white;")
+        elif not good.get("amount", 0):
+            cat_title_widget.setStyleSheet("background-color: skyblue; color: black;")
 
         self.article_input = InputText(text=good.get("article"), readonly=readonly)
         article = FormInput(
@@ -177,7 +183,7 @@ class GoodWindow(BaseWindowWithNavbar):
         # show ID in edit mode only
         if self.mode == self.__mode_edit:
             info.addWidget(good_id)
-        info.addLayout(cat_title)
+        info.addWidget(cat_title_widget)
         info.addLayout(article)
         info.addLayout(description)
         info.addLayout(producer)
