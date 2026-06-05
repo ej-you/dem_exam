@@ -1,6 +1,7 @@
 import os
 import sys
 
+from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QApplication
 
 from app.window.auth import AuthWindow
@@ -12,6 +13,9 @@ from config.config import MEDIA_PREFIX
 class Application:
     def __init__(self):
         self.__app = QApplication(sys.argv)
+
+        font = QFont("Times New Roman", 14)
+        self.__app.setFont(font)
 
         self.auth_window = AuthWindow(self)
         self.good_list_window = GoodListWindow(self)
