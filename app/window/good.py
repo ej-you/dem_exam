@@ -125,7 +125,7 @@ class GoodWindow(BaseWindowWithNavbar):
             self.photo_label.setToolTip("")
 
         # middle
-        good_id = Label(f"ID товара: {good.get("id")}")
+        good_id = Label(f"ID товара: {good.get('id')}")
         cat_title_widget = QWidget()
         cat_title = QHBoxLayout(cat_title_widget)
         self.cat_combo.select(good.get("category"))
