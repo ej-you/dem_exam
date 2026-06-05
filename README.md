@@ -21,3 +21,11 @@ python -m venv venv
 venv\Scripts\activate
 deactivate
 ```
+
+## Repo
+
+```shell
+git remote add origin git@github.com:ej-you/dem_dudkov_is_45.git
+git branch -M master
+git push -u origin master
+```
