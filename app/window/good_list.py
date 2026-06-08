@@ -99,8 +99,8 @@ class GoodListWindow(BaseWindowWithNavbar):
         filter_layout.addWidget(Label("Поставщик:"))
         self.supplier_filter = ComboBox()
         self.supplier_filter.addItem("Все", 0)
-        for supplier in self.good_repo.get_all_suppliers():
-            self.supplier_filter.addItem(supplier.get("title"), supplier.get("id"))
+        for supplier in self.good_repo.get_all_companies():
+            self.supplier_filter.addItem(supplier.get("name"), supplier.get("id"))
         self.supplier_filter.currentIndexChanged.connect(self._apply_filters)
         filter_layout.addWidget(self.supplier_filter)
 

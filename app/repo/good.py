@@ -3,7 +3,8 @@ from typing import List
 
 from sqlalchemy import or_
 
-from app.entity.good import Good, MeasurementUnit, Supplier, Producer, GoodCategory
+from app.entity.good import Good, MeasurementUnit, GoodCategory, Company
+# from app.entity.good import Supplier, Producer
 from app.repo.db_session import DBSession
 from config.config import DEFAULT_PHOTO_PATH, MEDIA_PREFIX
 
@@ -53,8 +54,8 @@ class GoodRepo:
                     Good.title.like(search),
                     Good.description.like(search),
                     Good.measurement_unit.has(name=search),
-                    Good.supplier.has(title=search),
-                    Good.producer.has(title=search),
+                    Good.supplier.has(name=search),
+                    Good.producer.has(name=search),
                     Good.good_category.has(name=search)
                 ))
 
@@ -148,23 +149,33 @@ class GoodRepo:
                 } for elem in unit_list
             ]
 
-    def get_all_suppliers(self):
+    # def get_all_suppliers(self):
+    #     with self.session as session:
+    #         sup_list = session.query(Supplier).all()
+    #         return [
+    #             {
+    #                 "id": elem.id,
+    #                 "title": elem.title,
+    #             } for elem in sup_list
+    #         ]
+    # def get_all_producers(self):
+    #     with self.session as session:
+    #         prod_list = session.query(Producer).all()
+    #         return [
+    #             {
+    #                 "id": elem.id,
+    #                 "title": elem.title,
+    #             } for elem in prod_list
+    #         ]
+
+    def get_all_companies(self):
         with self.session as session:
-            sup_list = session.query(Supplier).all()
+            com_list = session.query(Company).all()
             return [
                 {
                     "id": elem.id,
-                    "title": elem.title,
-                } for elem in sup_list
-            ]
-    def get_all_producers(self):
-        with self.session as session:
-            prod_list = session.query(Producer).all()
-            return [
-                {
-                    "id": elem.id,
-                    "title": elem.title,
-                } for elem in prod_list
+                    "name": elem.name,
+                } for elem in com_list
             ]
 
     def get_all_good_categories(self):
@@ -186,8 +197,8 @@ class GoodRepo:
             "title": good.title,
             "measurement_unit": good.measurement_unit.name,
             "price": good.price,
-            "supplier": good.supplier.title,
-            "producer": good.producer.title,
+            "supplier": good.supplier.name,
+            "producer": good.producer.name,
             "category": good.good_category.name,
             "discount": good.discount,
             "amount": good.amount,

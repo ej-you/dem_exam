@@ -48,24 +48,30 @@ CREATE TABLE measurement_units (
 );
 
 -- 2. Поставщики
-CREATE TABLE suppliers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(50) NOT NULL
-);
+--CREATE TABLE suppliers (
+--    id INT PRIMARY KEY AUTO_INCREMENT,
+--    title VARCHAR(50) NOT NULL
+--);
 
 -- 3. Производители
-CREATE TABLE producers (
+--CREATE TABLE producers (
+--    id INT PRIMARY KEY AUTO_INCREMENT,
+--    title VARCHAR(50) NOT NULL
+--);
+
+-- 2. Компании
+CREATE TABLE companies (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(50) NOT NULL
+    name VARCHAR(50) NOT NULL
 );
 
--- 4. Категории товаров
+-- 3. Категории товаров
 CREATE TABLE good_categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(35) NOT NULL
 );
 
--- 5. Товары (главная таблица)
+-- 4. Товары (главная таблица)
 CREATE TABLE goods (
     id INT PRIMARY KEY AUTO_INCREMENT,
     article VARCHAR(10) NOT NULL,
@@ -81,34 +87,33 @@ CREATE TABLE goods (
     photo VARCHAR(255) NOT NULL DEFAULT 'default_good.png',
 
     FOREIGN KEY (measurement_unit_id) REFERENCES measurement_units(id) ON DELETE RESTRICT,
-    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE RESTRICT,
-    FOREIGN KEY (producer_id) REFERENCES producers(id) ON DELETE RESTRICT,
+    FOREIGN KEY (supplier_id) REFERENCES companies(id) ON DELETE RESTRICT,
+    FOREIGN KEY (producer_id) REFERENCES companies(id) ON DELETE RESTRICT,
     FOREIGN KEY (good_category_id) REFERENCES good_categories(id) ON DELETE RESTRICT
 );
-
--- Индексы для оптимизации
-CREATE INDEX idx_goods_article ON goods(article);
-CREATE INDEX idx_goods_title ON goods(title);
-CREATE INDEX idx_goods_price ON goods(price);
-CREATE INDEX idx_goods_discount ON goods(discount);
-CREATE INDEX idx_goods_amount ON goods(amount);
-
--- Составные индексы
-CREATE INDEX idx_goods_category_price ON goods(good_category_id, price);
-CREATE INDEX idx_goods_supplier_price ON goods(supplier_id, price);
+--    FOREIGN KEY (supplier_id) REFERENCES suppliers(id) ON DELETE RESTRICT,
+--    FOREIGN KEY (producer_id) REFERENCES producers(id) ON DELETE RESTRICT,
 
 INSERT INTO measurement_units (name) VALUES ('шт');
 
 -- Поставщики
-INSERT INTO suppliers (title) VALUES
-    ('ООО "ТехноСнаб"'),
-    ('ИП Иванов'),
-    ('ООО "ТоргМастер"'),
-    ('ЗАО "ОптТрейд"'),
-    ('ООО "МегаСтрой"');
+--INSERT INTO suppliers (title) VALUES
+--    ('ООО "ТехноСнаб"'),
+--    ('ИП Иванов'),
+--    ('ООО "ТоргМастер"'),
+--    ('ЗАО "ОптТрейд"'),
+--    ('ООО "МегаСтрой"');
 
 -- Производители
-INSERT INTO producers (title) VALUES
+--INSERT INTO producers (title) VALUES
+--    ('ООО "Сделано в России"'),
+--    ('Китайская корпорация "HuaWei"'),
+--    ('ООО "Электроника"'),
+--    ('ИП Петров'),
+--    ('ООО "СтройИндустрия"');
+
+-- Компании
+INSERT INTO companies (name) VALUES
     ('ООО "Сделано в России"'),
     ('Китайская корпорация "HuaWei"'),
     ('ООО "Электроника"'),
@@ -126,13 +131,13 @@ INSERT INTO good_categories (name) VALUES
 
 -- Товары
 INSERT INTO goods (article, title, measurement_unit_id, price, supplier_id, producer_id, good_category_id, discount, amount, description) VALUES
-    ('A001', 'Смартфон X10', 1, 29999.99, 1, 2, 1, 10, 50, 'Современный смартфон с 128GB памяти'),
+    ('A001', 'Смартфон X10', 1, 29999.99, 2, 2, 1, 10, 50, 'Современный смартфон с 128GB памяти'),
     ('A002', 'Ноутбук Pro', 1, 89999.99, 1, 1, 1, 5, 25, 'Мощный ноутбук для работы и игр'),
-    ('B001', 'Микроволновая печь', 1, 5999.99, 2, 3, 2, 15, 100, 'Микроволновка с грилем'),
-    ('B002', 'Холодильник', 1, 44999.99, 2, 3, 2, 0, 30, 'Двухкамерный холодильник'),
-    ('C001', 'Цемент М500', 1, 350.00, 3, 4, 3, 0, 1000, 'Цемент в мешках по 50кг'),
-    ('C002', 'Кирпич красный', 1, 15.50, 3, 4, 3, 0, 5000, 'Керамический кирпич'),
-    ('D001', 'Яблоки', 1, 120.00, 4, 5, 4, 0, 200, 'Свежие яблоки'),
-    ('D002', 'Молоко', 1, 89.99, 4, 5, 4, 5, 150, 'Пастеризованное молоко 3.2%'),
-    ('E001', 'Футболка хлопок', 1, 999.99, 5, 1, 5, 20, 300, 'Хлопковая футболка'),
-    ('F001', 'Ручка шариковая', 1, 15.00, 5, 2, 6, 0, 1000, 'Синяя ручка');
+    ('B001', 'Микроволновая печь', 1, 5999.99, 3, 3, 2, 15, 100, 'Микроволновка с грилем'),
+    ('B002', 'Холодильник', 1, 44999.99, 3, 3, 2, 0, 30, 'Двухкамерный холодильник'),
+    ('C001', 'Цемент М500', 1, 350.00, 4, 4, 3, 0, 1000, 'Цемент в мешках по 50кг'),
+    ('C002', 'Кирпич красный', 1, 15.50, 4, 4, 3, 0, 5000, 'Керамический кирпич'),
+    ('D001', 'Яблоки', 1, 120.00, 5, 5, 4, 0, 200, 'Свежие яблоки'),
+    ('D002', 'Молоко', 1, 89.99, 5, 5, 4, 5, 150, 'Пастеризованное молоко 3.2%'),
+    ('E001', 'Футболка хлопок', 1, 999.99, 1, 1, 5, 20, 300, 'Хлопковая футболка'),
+    ('F001', 'Ручка шариковая', 1, 15.00, 2, 2, 6, 0, 1000, 'Синяя ручка');

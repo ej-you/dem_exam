@@ -76,16 +76,16 @@ class GoodWindow(BaseWindowWithNavbar):
             self.unit_combo.addItem(unit["name"], unit["id"])
 
         self.supplier_combo = ComboBox()
-        sups = self.good_repo.get_all_suppliers()
+        sups = self.good_repo.get_all_companies()
         self.supplier_combo.addItem("-- Выберите --", None)
         for sup in sups:
-            self.supplier_combo.addItem(sup["title"], sup["id"])
+            self.supplier_combo.addItem(sup["name"], sup["id"])
 
         self.producer_combo = ComboBox()
-        prods = self.good_repo.get_all_producers()
+        prods = self.good_repo.get_all_companies()
         self.producer_combo.addItem("-- Выберите --", None)
         for prod in prods:
-            self.producer_combo.addItem(prod["title"], prod["id"])
+            self.producer_combo.addItem(prod["name"], prod["id"])
 
         if self.mode == self.__mode_view:
             self.cat_combo.setDisabled(True)

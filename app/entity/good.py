@@ -17,24 +17,45 @@ class MeasurementUnit(Base):
     goods: Mapped[List["Good"]] = relationship(back_populates="measurement_unit")
 
 
-class Supplier(Base):
-    """Поставщик"""
-    __tablename__ = "suppliers"
+# class Supplier(Base):
+#     """Поставщик"""
+#     __tablename__ = "suppliers"
+#
+#     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+#     title: Mapped[str] = mapped_column(String(50), nullable=False)
+#
+#     goods: Mapped[List["Good"]] = relationship(back_populates="supplier")
+#
+#
+# class Producer(Base):
+#     """Производитель"""
+#     __tablename__ = "producers"
+#
+#     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+#     title: Mapped[str] = mapped_column(String(50), nullable=False)
+#
+#     goods: Mapped[List["Good"]] = relationship(back_populates="producer")
+
+
+class Company(Base):
+    """Компания"""
+    __tablename__ = "companies"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    title: Mapped[str] = mapped_column(String(50), nullable=False)
+    name: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    goods: Mapped[List["Good"]] = relationship(back_populates="supplier")
+    # goods: Mapped[List["Good"]] = relationship(back_populates="producer")
 
-
-class Producer(Base):
-    """Производитель"""
-    __tablename__ = "producers"
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    title: Mapped[str] = mapped_column(String(50), nullable=False)
-
-    goods: Mapped[List["Good"]] = relationship(back_populates="producer")
+    supplied_goods: Mapped[List["Good"]] = relationship(
+        "Good",
+        foreign_keys="[Good.supplier_id]",
+        back_populates="supplier"
+    )
+    produced_goods: Mapped[List["Good"]] = relationship(
+        "Good",
+        foreign_keys="[Good.producer_id]",
+        back_populates="producer"
+    )
 
 
 class GoodCategory(Base):
@@ -58,8 +79,10 @@ class Good(Base):
         ForeignKey("measurement_units.id", ondelete=RESTRICT), nullable=False
     )
     price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
-    supplier_id: Mapped[int] = mapped_column(ForeignKey("suppliers.id", ondelete=RESTRICT), nullable=False)
-    producer_id: Mapped[int] = mapped_column(ForeignKey("producers.id", ondelete=RESTRICT), nullable=False)
+    # supplier_id: Mapped[int] = mapped_column(ForeignKey("supplier.id", ondelete=RESTRICT), nullable=False)
+    # producer_id: Mapped[int] = mapped_column(ForeignKey("producer.id", ondelete=RESTRICT), nullable=False)
+    supplier_id: Mapped[int] = mapped_column(ForeignKey("companies.id", ondelete=RESTRICT), nullable=False)
+    producer_id: Mapped[int] = mapped_column(ForeignKey("companies.id", ondelete=RESTRICT), nullable=False)
     good_category_id: Mapped[int] = mapped_column(
         ForeignKey("good_categories.id", ondelete=RESTRICT), nullable=False
     )
@@ -69,6 +92,17 @@ class Good(Base):
     photo: Mapped[str] = mapped_column(String(255), default=DEFAULT_PHOTO_PATH, nullable=False)
 
     measurement_unit: Mapped["MeasurementUnit"] = relationship(back_populates="goods")
-    supplier: Mapped["Supplier"] = relationship(back_populates="goods")
-    producer: Mapped["Producer"] = relationship(back_populates="goods")
     good_category: Mapped["GoodCategory"] = relationship(back_populates="goods")
+    # supplier: Mapped["Supplier"] = relationship(back_populates="goods")
+    # producer: Mapped["Producer"] = relationship(back_populates="goods")
+
+    supplier: Mapped["Company"] = relationship(
+        "Company",
+        foreign_keys=[supplier_id],
+        back_populates="supplied_goods"
+    )
+    producer: Mapped["Company"] = relationship(
+        "Company",
+        foreign_keys=[producer_id],
+        back_populates="produced_goods"
+    )
